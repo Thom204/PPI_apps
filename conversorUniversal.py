@@ -1,6 +1,8 @@
 import streamlit as st
 
+#codigo generado por Chat GPT 40 mini
 # Funciones de conversión para cada categoría
+
 
 # Temperatura
 def celsius_a_fahrenheit(celsius):
@@ -125,7 +127,8 @@ def dtUp(data_in):
 
 # Interfaz de usuario en Streamlit
 st.title("Conversor de Unidades")
-st.header("por Thomas Monnier Granda")
+st.subheader("por Thomas Monnier Granda")
+st.subheader("codigo generado con Chat GPT 40 mini")
 
 # Categoría de conversión
 categoria = st.selectbox(
