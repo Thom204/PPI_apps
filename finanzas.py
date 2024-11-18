@@ -34,13 +34,18 @@ st.set_page_config(page_title="Registro de Finanzas Personales", layout="wide")
 st.title("Registro de Finanzas Personales")
 st.write("Esta aplicación permite gestionar tus finanzas personales, registrar ingresos, gastos, presupuestos y metas de ahorro.")
 
-# Crear un DataFrame vacío para almacenar los datos
+# Inicialización de las variables de session_state para evitar errores en runtime
 if 'finanzas' not in st.session_state:
     st.session_state.finanzas = pd.DataFrame(columns=['Fecha', 'Ingresos', 'Gastos', 'Presupuesto', 'Meta de Ahorro'])
 
-# Crear una variable para almacenar el tipo de presupuesto
 if 'tipo_presupuesto' not in st.session_state:
     st.session_state.tipo_presupuesto = None  # Ningún presupuesto definido por defecto
+
+if 'presupuesto' not in st.session_state:
+    st.session_state.presupuesto = None  # Ningún presupuesto definido por defecto
+
+if 'meta_ahorro' not in st.session_state:
+    st.session_state.meta_ahorro = 0.0  # Meta de ahorro predeterminada en 0.0
 
 # Menú desplegable para seleccionar la funcionalidad
 opcion = st.selectbox(
@@ -50,6 +55,8 @@ opcion = st.selectbox(
 
 # Función para ingresar nuevos datos de gasto/ingreso
 def registrar_gasto_ingreso():
+    st.subheader("Registrar nuevo gasto o ingreso")
+
     fecha = st.date_input("Fecha", min_value=datetime(2020, 1, 1), value=datetime.today())
     ingresos = st.number_input("Ingresos", min_value=0.0, step=1.0, format="%.2f")
     gastos = st.number_input("Gastos", min_value=0.0, step=1.0, format="%.2f")
@@ -66,20 +73,29 @@ def registrar_gasto_ingreso():
         st.session_state.finanzas = pd.concat([st.session_state.finanzas, pd.DataFrame([nueva_entrada])], ignore_index=True)
         st.success("¡Datos registrados con éxito!")
 
+    # Mostrar tabla de los gastos e ingresos registrados
+    if not st.session_state.finanzas.empty:
+        st.write("**Historial de ingresos y gastos registrados**")
+        st.dataframe(st.session_state.finanzas)
+
 # Función para establecer el presupuesto (semanal o mensual)
 def establecer_presupuesto():
+    st.subheader("Establecer presupuesto")
+
     tipo = st.radio("Selecciona el tipo de presupuesto", ("Semanal", "Mensual"))
     presupuesto = st.number_input(f"Establece tu presupuesto {tipo.lower()}", min_value=0.0, step=1.0, format="%.2f")
-    
+
     st.session_state.tipo_presupuesto = tipo
     st.session_state.presupuesto = presupuesto
     st.success(f"Presupuesto {tipo.lower()} establecido en ${presupuesto}")
 
 # Función para establecer metas de gasto
 def establecer_metas_gasto():
+    st.subheader("Establecer metas de gasto")
+
     tipo = st.radio("Selecciona el tipo de meta de gasto", ("Semanal", "Mensual"))
     meta_gasto = st.number_input(f"Establece tu meta de gasto {tipo.lower()}", min_value=0.0, step=1.0, format="%.2f")
-    
+
     st.session_state.meta_gasto = meta_gasto
     st.success(f"Meta de gasto {tipo.lower()} establecida en ${meta_gasto}")
 
@@ -108,11 +124,11 @@ def modificar_registros():
 def ver_reporte():
     if not st.session_state.finanzas.empty:
         # Pedir al usuario el presupuesto si no lo ha establecido
-        if 'presupuesto' not in st.session_state or st.session_state.presupuesto is None:
+        if st.session_state.presupuesto is None:
             st.session_state.presupuesto = st.number_input("Ingresa tu presupuesto para generar el reporte", min_value=0.0, step=1.0, format="%.2f")
         
         # Pedir la meta de ahorro si no ha sido definida, con valor predeterminado 0
-        if 'meta_ahorro' not in st.session_state or st.session_state.meta_ahorro is None:
+        if st.session_state.meta_ahorro is None:
             st.session_state.meta_ahorro = 0.0
 
         # Selección de tipo de reporte
