@@ -127,8 +127,7 @@ def dtUp(data_in):
 
 # Interfaz de usuario en Streamlit
 st.title("Conversor de Unidades")
-st.subheader("por Thomas Monnier Granda")
-st.subheader("codigo generado con Chat GPT 40 mini")
+st.subheader("por Thomas Monnier Granda\n codigo generado con Chat GPT 40 mini")
 
 # Categoría de conversión
 categoria = st.selectbox(
