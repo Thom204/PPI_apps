@@ -125,6 +125,7 @@ def dtUp(data_in):
 
 # Interfaz de usuario en Streamlit
 st.title("Conversor de Unidades")
+st.header("por Thomas Monnier Granda")
 
 # Categoría de conversión
 categoria = st.selectbox(
