@@ -1,10 +1,12 @@
 import streamlit as st
 import pandas as pd
-import numpy as np
 from datetime import datetime
 
 # Función para calcular las diferencias entre lo presupuestado y lo real
 def calcular_diferencias(df, tipo="semanal"):
+    # Asegurarse de que la columna 'Fecha' está en formato de fecha
+    df['Fecha'] = pd.to_datetime(df['Fecha'])
+    
     # Establecer el periodo (semanal o mensual)
     if tipo == "semanal":
         df['Semana'] = df['Fecha'].dt.isocalendar().week
