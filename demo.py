@@ -2,7 +2,7 @@ import streamlit as st
 from PIL import Image
 
 # Variables con la imagen y el texto LaTeX
-image_path = "example.jpg"  # Reemplázalo con la ruta de tu imagen
+image_path = "example_1.jpg"  # Reemplázalo con la ruta de tu imagen
 latex_text = r"E = mc^2"  # Ejemplo de texto en LaTeX
 
 # Cargar la imagen
